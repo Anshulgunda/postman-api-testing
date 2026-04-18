@@ -1,0 +1,230 @@
+{
+  "info": {
+    "_postman_id": "ed3952bb-ab79-4d4d-9c58-3cd71e32cd8d",
+    "name": "Petstore API Testing",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53203384",
+    "_collection_link": "https://go.postman.co/collection/53203384-ed3952bb-ab79-4d4d-9c58-3cd71e32cd8d?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Assignment 1 - GET Requests",
+      "item": [
+        {
+          "name": "Get Pets by Status - Validate 200 Response",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Verify API returns status 200 OK\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "}); \r",
+                  "\r",
+                  "\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/pet/findByStatus?status=available",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "pet",
+                "findByStatus"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "available"
+                }
+              ]
+            },
+            "description": "This request fetches pets with status 'available' from the Petstore API.\n\nValidations:\n\n- Verify API returns status 200 OK.  \n      \n    ."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Assignment 2 - POST Requests",
+      "item": [
+        {
+          "name": "Create Pet - Validate Response Data",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Verify status code is 200 OK\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "let requestData = JSON.parse(pm.request.body.raw);\r",
+                  "pm.test(\"Verify pet name in response\", function(){\r",
+                  "    var response = pm.response.json();\r",
+                  "    pm.expect(response.name).to.eql(\"Doggie\");\r",
+                  "});\r",
+                  "\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": 9999,\r\n    \"name\": \"Doggie\",\r\n    \"status\": \"available\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/pet",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "pet"
+              ]
+            },
+            "description": "This request creates a new pet in the Petstore API using a POST method.\n\nRequest Body:  \n\\- id: Unique identifier for the pet  \n\\- name: Name of the pet  \n\\- status: Availability status of the pet.\n\nValidations:  \n\\- Verify the API returns a status code of 200 OK  \n\\- Verify the response contains the same pet name as sent in the request"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Assignment 3 - Status Code Validation",
+      "item": [
+        {
+          "name": "Get Pet by ID - Valid Request (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Verify Status code is 200 OK\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/pet/9999",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "pet",
+                "9999"
+              ]
+            },
+            "description": "This request retrieves a valid pet by ID.\n\nValidation:\n\n- Verify the API returns a status code of 200 OK."
+          },
+          "response": []
+        },
+        {
+          "name": "Create pet - with an empty body",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Verify the status code is 400 or 405\", function(){\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([400, 405]);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": ,\r\n    \"photoUrls\": \"\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/pet",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "pet"
+              ]
+            },
+            "description": "This request is to create a pet without passing a body.\n\nValidations:\n\n\\-Verify the API returns status code 400 - Bad Request or 405- Method Not Allowed."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Pet by Invalid ID - Expect 404",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Verify the status code is 404 Not Found\", function(){\r",
+                  "    pm.response.to.have.status(404);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/pet/99999999",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "pet",
+                "99999999"
+              ]
+            },
+            "description": "This request tries to retrieve a pet with an Invalid ID.\n\nValidation:\n\n\\-Verify the API returns a status code of 404 - Pet NOT FOUND"
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
