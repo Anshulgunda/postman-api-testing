@@ -88,6 +88,10 @@ Tested different scenarios:
 * Validating status codes
 * Using environment variables
 
+##  Architecture Diagram
+
+![Architecture](architecture.png)
+
 
 
 ##  Author
